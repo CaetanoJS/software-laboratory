@@ -1,21 +1,19 @@
 
 const express = require('express')
-const app = express()
+const api = express()
 const port = 3000
-const db = require('./crud')
-const firebase = require('./firebase')
 
-app.use(express.json())
-app.listen(port, () => {
+const AppAdminEndpoints = require('./enpoint/appAdminEndpoints')
+const CustomersEndpoints = require('./enpoint/customersEndpoints')
+const ProductsEndpoints = require('./enpoint/productsEndpoints')
+const { db, admin } = require('./firebase')
+
+api.use(express.json())
+
+api.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-
-app.get('/', (req, res) => {
-
-  res.send('Hello World!')
-})
-
-
-app.get('/signup', firebase.login)
-app.get('/addUser', firebase.addUser)
+new AppAdminEndpoints(api, db, admin)
+new CustomersEndpoints(api, db)
+new ProductsEndpoints(api, db)

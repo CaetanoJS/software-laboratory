@@ -3,43 +3,26 @@ const { getFirestore } = require('firebase-admin/firestore');
 const credentials = require("./software-laboratory-firebase-adminsdk-rgexl-115a6e0853.json")
 
 admin.initializeApp({
-    credential: admin.credential.cert(credentials)
-})
+  credential: admin.credential.cert(credentials),
+  databaseURL: "https://software-laboratory-default-rtdb.firebaseio.com"
+});
 
 const db = getFirestore()
 
-const login =  async (req, res) => {
-    const user = {
-        email: req.body.email,
-        password: req.body.password
-      }
-    
-      const userResponse = await admin.auth().createUser({
-        email: user.email,
-        password: user.password,
-        emailVerified: false,
-        disabled: false
-      })
+// const addUser = async (req, res) => {
+//     const Users = db.collection('users')
 
-      res.json(userResponse);
-}
+//     const response = await Users.add({
+//     name: req.body.name,
+//     email: req.body.email,
+//     cellphone: req.body.cellphone,
+//     address: req.body.address
+//     });
 
-const addUser = async (req, res) => {
-    const Users = db.collection('users')
-
-    const response = await Users.add({
-    name: req.body.name,
-    email: req.body.email,
-    cellphone: req.body.cellphone,
-    address: req.body.address
-    });
-
-    res.json(response)
-}
+//     res.json(response)
+// }
 
 module.exports = {
-    admin,
     db,
-    login,
-    addUser
+    admin
 }
