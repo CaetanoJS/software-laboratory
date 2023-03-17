@@ -1,7 +1,8 @@
 const CustomerController = require('../controller/customersController')
 module.exports = class customersEndpoints {
-    constructor(api, db) {
+    constructor(api, db, middleware) {
         this.customerController = new CustomerController(db)
+        api.use(middleware.checkAuthUserToken)
         api.get('/customers/:id', async (req, res) => { res.json(await this.customerController.getCustomerById(req.params.id)) })
         api.route('/customers')
         .get( async (req, res) => { res.json(await this.customerController.getCustomers()) })
