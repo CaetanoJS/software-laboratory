@@ -1,4 +1,5 @@
 const AppAdminModel = require('../model/appAdminModel')
+const MessageHandler = require('../util/messageResponseHandling')
 module.exports = class AppAdminController{
     constructor(db, admin, authService) {
         this.db = db
@@ -7,12 +8,23 @@ module.exports = class AppAdminController{
     }
 
     createAuthUser = async (req) => {
-        //check if error happened and sent the correct message
-        return this.appAdminModel.createAuthUser(req)
+        
+        let response = await this.appAdminModel.createAuthUser(req).catch( (res) => {
+            return new MessageHandler().errorMessage("Error Creating user", res)
+        })
+
+        return response
     }
 
-    loginAuthUser = async (req) => {
-        //check if error happened and sent the correct message
-        return this.appAdminModel.loginAuthUser(req)
+    loginAuthUser = async (req, res) => {
+        let response = await this.appAdminModel.loginAuthUser(req).catch( (res) => {
+            if (res.code = "auth/user-not-found") {
+                return new MessageHandler().errorMessage("Invalid email or password", res)
+            } else {
+                return new MessageHandler().errorMessage("Internal Server error", res)
+            }}
+        )
+
+        return response
     }
 }

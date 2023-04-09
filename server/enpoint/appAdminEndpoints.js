@@ -8,6 +8,6 @@ module.exports = class AppEndpoints {
         .post( async (req, res) => { return res.json(await this.appAdminController.createAuthUser(req)) })
         .put( (req, res) => { return res.json('put') })
         .delete( (req, res) => { return res.json('delete') });
-        api.post('/db-users/login',  async (req, res) => { return res.json(await this.appAdminController.loginAuthUser(req)) })
+        api.post('/db-users/login',  async (req, res) => { return res.json(await this.appAdminController.loginAuthUser(req, res)) })
     }
 }

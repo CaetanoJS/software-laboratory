@@ -1,6 +1,6 @@
 const admin = require("firebase-admin")
 const { getFirestore } = require('firebase-admin/firestore');
-const adminCredentials = require("./software-laboratory-firebase-adminsdk-rgexl-115a6e0853.json")
+const adminCredentials = require("./firebase-sdk-admin.json")
 const firebaseConfig = require('./firebase-app-client.json')
 admin.initializeApp({
   credential: admin.credential.cert(adminCredentials),

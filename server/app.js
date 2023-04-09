@@ -1,5 +1,6 @@
 
 const express = require('express')
+const cors = require('cors');
 const api = express()
 const port = 3000
 
@@ -15,6 +16,7 @@ const authService = require("firebase/auth")
 
 firebase.initializeApp(firebaseConfig);
 
+api.use(cors())
 api.use(express.json())
 
 api.listen(port, () => {

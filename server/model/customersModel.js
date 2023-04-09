@@ -3,7 +3,17 @@ module.exports = class CustomersModel {
         this.db = db
     }
 
-    async getCustomerById (userId) {
+    collectionName = 'customers'
+
+    async getCustomerById (customerId) {
+        let collection = await this.db.collection(this.collectionName)
+        let customer = await collection.doc(customerId).get()
+
+        if (customer.exist) {
+            return customer.data()
+        } else {
+            throw new Error('User not found');
+        }
         
     }
 
@@ -11,16 +21,16 @@ module.exports = class CustomersModel {
         
     }
 
-    async deleteCustomers (user) {
+    async deleteCustomers (customer) {
 
     }
 
-    async editCustomers (user) {
+    async editCustomers (customer) {
 
     }
 
-    async addCustomers (user) {
-
+    async addCustomers (customer) {
+        return await this.db.collection(this.collectionName).doc().set(customer)
     }
 
 }
