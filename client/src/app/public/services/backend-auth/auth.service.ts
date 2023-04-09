@@ -6,12 +6,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../../interfaces/interfaces';
 
-export const fakeRegisterResponse: RegisterResponse = {
-  status: 200,
-  message: 'Registration sucessfull.'
-}
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,8 +19,15 @@ export class AuthService {
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('http://localhost:3000/db-users/login', loginRequest)
-    .pipe(
-      tap((res: LoginResponse) => localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, res.idToken)))
+    .pipe(tap((res: LoginResponse) => localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, res.response.idToken)))
+  }
+
+  register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>('http://localhost:3000/db-users/register', registerRequest).pipe(
+      tap((res: RegisterResponse) => this.snackbar.open(`User created successfully`, 'Close', {
+        duration: 2000, horizontalPosition: 'right', verticalPosition: 'top'
+      })),
+    );
   }
 
   /*
