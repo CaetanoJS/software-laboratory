@@ -9,20 +9,22 @@ module.exports = class CustomersModel {
         let collection = await this.db.collection(this.collectionName)
         let customer = await collection.doc(customerId).get()
 
-        if (customer.exist) {
+        if (customer.exists) {
             return customer.data()
         } else {
-            throw new Error('User not found');
+            throw new Error('Customer not found');
         }
         
     }
 
     async getCustomers () {
-        
+        let customers = await this.db.collection(this.collectionName).get()
+
+        return customers.docs.map(doc => doc.data());
     }
 
-    async deleteCustomers (customer) {
-
+    async deleteCustomers (customerId) {
+        return await this.db.collection(this.collectionName).doc(customerId).delete()
     }
 
     async editCustomers (customer) {

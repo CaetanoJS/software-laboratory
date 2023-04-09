@@ -1,4 +1,4 @@
-module.exports = class messageResponseHandling {
+module.exports = class MessageResponseHandling {
     constructor() {
         
     }

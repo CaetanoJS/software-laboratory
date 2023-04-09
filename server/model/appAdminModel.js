@@ -1,3 +1,4 @@
+const PasswordMatchingError = require('../util/passwordMatchingError')
 module.exports = class AppAdminModel {
     constructor(db, admin, authService) {
         this.db = db
@@ -8,7 +9,13 @@ module.exports = class AppAdminModel {
     createAuthUser = async (req) => {
       const user = {
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
+          passwordConfirm: req.body.passwordConfirm
+        }
+
+            // Check if passwords are matching. If not then add the error 'passwordsNotMatching: true' to the form
+        if (!(user.password === user.passwordConfirm) && (user.password !== null && user.passwordConfirm !== null)) {
+          throw new PasswordMatchingError();
         }
       
         const userResponse = await this.admin.auth().createUser({

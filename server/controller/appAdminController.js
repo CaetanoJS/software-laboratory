@@ -1,5 +1,6 @@
 const AppAdminModel = require('../model/appAdminModel')
 const MessageHandler = require('../util/messageResponseHandling')
+const PasswordMatchingError = require('../util/errorHandling')
 module.exports = class AppAdminController{
     constructor(db, admin, authService) {
         this.db = db
@@ -9,19 +10,30 @@ module.exports = class AppAdminController{
 
     createAuthUser = async (req) => {
         
-        let response = await this.appAdminModel.createAuthUser(req).catch( (res) => {
-            return new MessageHandler().errorMessage("Error Creating user", res)
+        let response = await this.appAdminModel.createAuthUser(req)
+        .then( (res) => {
+            return new MessageHandler().sucessMessage("User created correctly", res)
+        })
+        .catch( (error) => {
+            if (error instanceof PasswordMatchingError) {
+                return new MessageHandler().errorMessage("Password does not match", error)
+            }
+            return new MessageHandler().errorMessage(error.message, error)
         })
 
         return response
     }
 
     loginAuthUser = async (req, res) => {
-        let response = await this.appAdminModel.loginAuthUser(req).catch( (res) => {
-            if (res.code = "auth/user-not-found") {
-                return new MessageHandler().errorMessage("Invalid email or password", res)
+        let response = await this.appAdminModel.loginAuthUser(req)
+        .then( (res) => {
+            return new MessageHandler().sucessMessage("User logged correctly", res)
+        })
+        .catch( (error) => {
+            if (error.code = "auth/user-not-found") {
+                return new MessageHandler().errorMessage("Invalid email or password", error)
             } else {
-                return new MessageHandler().errorMessage("Internal Server error", res)
+                return new MessageHandler().errorMessage("Internal Server error", error)
             }}
         )
 

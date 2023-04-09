@@ -19,11 +19,27 @@ module.exports = class CustomersController {
     }
 
     async getCustomers () {
-        
+        let response = await this.customerModel.getCustomers()
+        .then( (res) => {
+            return new MessageHandler().sucessMessage("All Customers retrievied correctly", res)
+        })
+        .catch( (error) => {
+            return new MessageHandler().errorMessage(error.message, error)
+        })
+
+        return response
     }
 
-    async deleteCustomers (customer) {
+    async deleteCustomers (customerId) {
+        let response = await this.customerModel.deleteCustomers(customerId)
+        .then( (res) => {
+            return new MessageHandler().sucessMessage("Customer deleted correctlty", res)
+        })
+        .catch( (error) => {
+            return new MessageHandler().errorMessage(error.message, error)
+        })
 
+        return response
     }
 
     async editCustomers (customer) {

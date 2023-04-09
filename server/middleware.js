@@ -7,7 +7,7 @@ module.exports = class Middleware {
     checkAuthUserToken = (req, res, next) => {
         const header = req.headers["authorization"];
         if (typeof header !== "undefined") {
-          const token = header
+          const token = header.split(' ')[1]
           this.admin.auth().verifyIdToken(token).then((decodedToken) => {
               req.user = decodedToken;
               next();
