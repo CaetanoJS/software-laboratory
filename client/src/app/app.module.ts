@@ -6,7 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { JwtModule } from '@auth0/angular-jwt';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpErrorHandlingInterceptor } from './interceptor/http-error-handling.interceptor';
 
 
 // specify the key where the token is stored in the local storage
@@ -37,7 +38,15 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [],
+  providers: [   {
+
+    provide: HTTP_INTERCEPTORS,
+
+    useClass: HttpErrorHandlingInterceptor,
+
+    multi: true
+
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
