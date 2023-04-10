@@ -5,3 +5,64 @@
 <a [routerLink]="['../../public/register']">Go back to Register</a>
 <br>
 <br>
+
+<div>
+    <mat-card>
+      <mat-card-title>Register Customer</mat-card-title>
+  
+      <mat-card-content>
+        <form [formGroup]="customerForm" (ngSubmit)="registerCustomer()">
+  
+          <mat-form-field>
+            <input type="name" matInput placeholder="Name" formControlName="name">
+            <!-- Here we can display error messages/hints for the user, if one of the Validators adds an error to the email 
+             with the .touched check we only display the hints if the input was touched by the users -->
+            <mat-error
+              *ngIf="this.customerForm.get('name')?.touched && this.customerForm.get('name')?.hasError('required')">
+              Name is required</mat-error>
+          </mat-form-field>
+  
+          <mat-form-field>
+            <input type="email" matInput placeholder="Email" formControlName="email">
+            <mat-error
+              *ngIf="this.customerForm.get('email')?.touched && this.customerForm.get('email')?.hasError('required')">
+              Password is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input type="cellphone" matInput placeholder="Cellphone" formControlName="cellphone">
+            <mat-error
+              *ngIf="this.customerForm.get('cellphone')?.touched && this.customerForm.get('cellphone')?.hasError('required')">
+              Password is required</mat-error>
+          </mat-form-field>
+  
+          <div class="button">
+            <!-- Button is disabled(not clickable), if our RegisterForm contains Validation Errors -->
+            <button type="submit" mat-button [disabled]="!customerForm.valid">Register</button>
+          </div>
+  
+        </form>
+      </mat-card-content>
+
+        <h3 class="p-3 text-center">Diplaying all Customers</h3>
+        <div class="container">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Cellphone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users$">
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.cellphone}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+  
+    </mat-card>
+  </div>
