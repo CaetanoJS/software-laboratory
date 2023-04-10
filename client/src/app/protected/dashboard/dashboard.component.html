@@ -15,8 +15,6 @@
   
           <mat-form-field>
             <input type="name" matInput placeholder="Name" formControlName="name">
-            <!-- Here we can display error messages/hints for the user, if one of the Validators adds an error to the email 
-             with the .touched check we only display the hints if the input was touched by the users -->
             <mat-error
               *ngIf="this.customerForm.get('name')?.touched && this.customerForm.get('name')?.hasError('required')">
               Name is required</mat-error>
